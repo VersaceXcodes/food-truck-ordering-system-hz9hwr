@@ -1,0 +1,37 @@
+{
+  "timestamp": 1744646070710,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_OrderTracking",
+      "version": "1744645738725"
+    }
+  },
+  "projectId": "food-truck-ordering-system",
+  "files": [
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/components/views/UV_OrderTracking.tsx",
+      "type": "text",
+      "size": 239,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_OrderTracking/empty.tsx",
+      "type": "text",
+      "size": 406,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_OrderTracking/1744645738725.tsx",
+      "type": "text",
+      "size": 5908,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_OrderTracking/meta.json",
+      "type": "text",
+      "size": 53,
+      "dependencies": false
+    }
+  ]
+}

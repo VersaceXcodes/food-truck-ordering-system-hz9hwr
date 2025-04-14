@@ -1,0 +1,881 @@
+openapi: 3.0.0
+info:
+  title: FoodTruck Express API
+  version: 1.0.0
+  description: >
+    API for FoodTruck Express MVP. Provides endpoints for user authentication,
+    profile management, food truck discovery, menu management, order placement
+    and tracking, reviews, and notifications.
+servers:
+  - url: http://localhost:1337
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      operationId: register_user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRegisterRequest"
+      responses:
+        "200":
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Bad Request
+  /api/auth/login:
+    post:
+      summary: Log in an existing user
+      operationId: login_user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLoginRequest"
+      responses:
+        "200":
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Unauthorized
+  /api/users/profile:
+    get:
+      summary: Retrieve authenticated user's profile
+      operationId: get_user_profile
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User profile retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: "#/components/schemas/User"
+                required:
+                  - user
+        "401":
+          description: Unauthorized
+    put:
+      summary: Update authenticated user's profile
+      operationId: update_user_profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateProfileRequest"
+      responses:
+        "200":
+          description: User profile updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserUpdateProfileResponse"
+        "400":
+          description: Bad Request
+  /api/foodtrucks:
+    get:
+      summary: List active food trucks with optional filters
+      operationId: list_food_trucks
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Search term for truck name or description
+        - in: query
+          name: cuisine_type
+          schema:
+            type: string
+          description: Filter by cuisine type
+        - in: query
+          name: location
+          schema:
+            type: string
+          description: Filter by location
+      responses:
+        "200":
+          description: List of food trucks retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoodTruckListResponse"
+  /api/foodtrucks/{id}:
+    get:
+      summary: Get details of a specific food truck including menu items
+      operationId: get_food_truck_by_id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Food truck details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoodTruckDetails"
+        "404":
+          description: Food truck not found
+  /api/menu-items:
+    post:
+      summary: Create a new menu item (operator)
+      operationId: create_menu_item
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuItemRequest"
+      responses:
+        "200":
+          description: Menu item created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItemResponse"
+        "400":
+          description: Bad Request
+    get:
+      summary: List menu items for a specific food truck
+      operationId: list_menu_items
+      parameters:
+        - in: query
+          name: food_truck_id
+          required: true
+          schema:
+            type: string
+          description: ID of the food truck
+      responses:
+        "200":
+          description: List of menu items retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  menu_items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MenuItem"
+                required:
+                  - menu_items
+  /api/menu-items/{id}:
+    put:
+      summary: Update an existing menu item
+      operationId: update_menu_item
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuItemRequest"
+      responses:
+        "200":
+          description: Menu item updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItemResponse"
+        "400":
+          description: Bad Request
+    delete:
+      summary: Delete a menu item
+      operationId: delete_menu_item
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Menu item deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "404":
+          description: Menu item not found
+  /api/orders:
+    post:
+      summary: Place a new order
+      operationId: place_order
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRequest"
+      responses:
+        "200":
+          description: Order placed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        "400":
+          description: Bad Request
+    get:
+      summary: Retrieve orders for the authenticated user
+      operationId: list_orders
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Page number for pagination
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+          description: Number of orders per page
+      responses:
+        "200":
+          description: Orders retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrdersResponse"
+  /api/orders/{id}/status:
+    patch:
+      summary: Update order status (operator only)
+      operationId: update_order_status
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderStatusUpdateRequest"
+      responses:
+        "200":
+          description: Order status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        "400":
+          description: Bad Request
+  /api/reviews:
+    post:
+      summary: Submit a review for a completed order
+      operationId: submit_review
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewRequest"
+      responses:
+        "200":
+          description: Review submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewResponse"
+        "400":
+          description: Bad Request
+  /api/notifications:
+    get:
+      summary: Retrieve notifications for the authenticated user
+      operationId: list_notifications
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: is_read
+          required: false
+          schema:
+            type: string
+          description: Filter notifications by read status ("true" or "false")
+      responses:
+        "200":
+          description: Notifications retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationsResponse"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    UserRegisterRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+          enum:
+            - customer
+            - operator
+            - admin
+      required:
+        - full_name
+        - email
+        - password
+        - role
+    UserLoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    AuthResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        user:
+          $ref: "#/components/schemas/User"
+        token:
+          type: string
+      required:
+        - success
+        - user
+        - token
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        full_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        addresses:
+          type: array
+          items:
+            $ref: "#/components/schemas/Address"
+        created_at:
+          type: number
+        updated_at:
+          type: number
+      required:
+        - id
+        - full_name
+        - email
+        - role
+        - created_at
+        - updated_at
+    Address:
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip_code:
+          type: string
+        is_default:
+          type: string
+          enum:
+            - "true"
+            - "false"
+        created_at:
+          type: number
+        updated_at:
+          type: number
+      required:
+        - id
+        - address
+        - city
+        - state
+        - zip_code
+        - is_default
+        - created_at
+        - updated_at
+    UserUpdateProfileRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+        phone:
+          type: string
+        addresses:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserAddressUpdate"
+      required:
+        - full_name
+    UserAddressUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip_code:
+          type: string
+        is_default:
+          type: string
+          enum:
+            - "true"
+            - "false"
+      required:
+        - address
+        - city
+        - state
+        - zip_code
+        - is_default
+    UserUpdateProfileResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        updated_user:
+          $ref: "#/components/schemas/User"
+      required:
+        - success
+        - updated_user
+    FoodTruck:
+      type: object
+      properties:
+        id:
+          type: string
+        operator_id:
+          type: string
+        truck_name:
+          type: string
+        description:
+          type: string
+        cuisine_type:
+          type: string
+        image_url:
+          type: string
+        location:
+          type: string
+        active:
+          type: string
+          enum:
+            - "true"
+            - "false"
+        created_at:
+          type: number
+        updated_at:
+          type: number
+      required:
+        - id
+        - operator_id
+        - truck_name
+        - cuisine_type
+        - location
+        - active
+        - created_at
+        - updated_at
+    FoodTruckListResponse:
+      type: object
+      properties:
+        food_trucks:
+          type: array
+          items:
+            $ref: "#/components/schemas/FoodTruck"
+      required:
+        - food_trucks
+    MenuItem:
+      type: object
+      properties:
+        id:
+          type: string
+        food_truck_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        category:
+          type: string
+        image_url:
+          type: string
+        modifiers:
+          type: string
+        is_sold_out:
+          type: string
+          enum:
+            - "true"
+            - "false"
+        created_at:
+          type: number
+        updated_at:
+          type: number
+      required:
+        - id
+        - food_truck_id
+        - title
+        - price
+        - category
+        - is_sold_out
+        - created_at
+        - updated_at
+    MenuItemRequest:
+      type: object
+      properties:
+        food_truck_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        category:
+          type: string
+        image_url:
+          type: string
+        modifiers:
+          type: string
+        is_sold_out:
+          type: string
+          enum:
+            - "true"
+            - "false"
+      required:
+        - food_truck_id
+        - title
+        - price
+        - category
+        - is_sold_out
+    MenuItemResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        menu_item:
+          $ref: "#/components/schemas/MenuItem"
+      required:
+        - success
+        - menu_item
+    FoodTruckDetails:
+      type: object
+      properties:
+        id:
+          type: string
+        operator_id:
+          type: string
+        truck_name:
+          type: string
+        description:
+          type: string
+        cuisine_type:
+          type: string
+        image_url:
+          type: string
+        location:
+          type: string
+        active:
+          type: string
+          enum:
+            - "true"
+            - "false"
+        created_at:
+          type: number
+        updated_at:
+          type: number
+        menu_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/MenuItem"
+      required:
+        - id
+        - operator_id
+        - truck_name
+        - cuisine_type
+        - location
+        - active
+        - created_at
+        - updated_at
+        - menu_items
+    CartItem:
+      type: object
+      properties:
+        menu_item_id:
+          type: string
+        quantity:
+          type: number
+        customizations:
+          type: string
+      required:
+        - menu_item_id
+        - quantity
+    OrderRequest:
+      type: object
+      properties:
+        food_truck_id:
+          type: string
+        payment_method:
+          type: string
+          enum:
+            - online
+            - cash
+        total_amount:
+          type: number
+        cart_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+      required:
+        - food_truck_id
+        - payment_method
+        - total_amount
+        - cart_items
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+        order_id:
+          type: string
+        menu_item_id:
+          type: string
+        quantity:
+          type: number
+        customizations:
+          type: string
+        price_at_time:
+          type: number
+        subtotal:
+          type: number
+      required:
+        - id
+        - order_id
+        - menu_item_id
+        - quantity
+        - price_at_time
+        - subtotal
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        customer_id:
+          type: string
+        food_truck_id:
+          type: string
+        order_status:
+          type: string
+          enum:
+            - pending
+            - accepted
+            - preparing
+            - ready
+            - completed
+            - cancelled
+        payment_method:
+          type: string
+        total_amount:
+          type: number
+        payment_details:
+          type: string
+        created_at:
+          type: number
+        updated_at:
+          type: number
+        order_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+      required:
+        - id
+        - customer_id
+        - food_truck_id
+        - order_status
+        - payment_method
+        - total_amount
+        - created_at
+        - updated_at
+        - order_items
+    OrderResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        order:
+          $ref: "#/components/schemas/Order"
+      required:
+        - success
+        - order
+    OrderStatusUpdateRequest:
+      type: object
+      properties:
+        order_status:
+          type: string
+          enum:
+            - accepted
+            - preparing
+            - ready
+            - completed
+            - cancelled
+      required:
+        - order_status
+    OrdersResponse:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: "#/components/schemas/Order"
+      required:
+        - orders
+    ReviewRequest:
+      type: object
+      properties:
+        order_id:
+          type: string
+        food_truck_id:
+          type: string
+        rating:
+          type: number
+        review_text:
+          type: string
+      required:
+        - order_id
+        - food_truck_id
+        - rating
+    Review:
+      type: object
+      properties:
+        id:
+          type: string
+        order_id:
+          type: string
+        customer_id:
+          type: string
+        food_truck_id:
+          type: string
+        rating:
+          type: number
+        review_text:
+          type: string
+        created_at:
+          type: number
+      required:
+        - id
+        - order_id
+        - customer_id
+        - food_truck_id
+        - rating
+        - created_at
+    ReviewResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        review:
+          $ref: "#/components/schemas/Review"
+      required:
+        - success
+        - review
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        notification_type:
+          type: string
+        message:
+          type: string
+        reference_id:
+          type: string
+        is_read:
+          type: string
+          enum:
+            - "true"
+            - "false"
+        created_at:
+          type: number
+      required:
+        - id
+        - user_id
+        - notification_type
+        - message
+        - is_read
+        - created_at
+    NotificationsResponse:
+      type: object
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/Notification"
+      required:
+        - notifications
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+        - success

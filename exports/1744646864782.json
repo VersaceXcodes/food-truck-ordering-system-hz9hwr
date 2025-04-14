@@ -1,0 +1,37 @@
+{
+  "timestamp": 1744646864782,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_ForgotPassword",
+      "version": "1744646864392"
+    }
+  },
+  "projectId": "food-truck-ordering-system",
+  "files": [
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/components/views/UV_ForgotPassword.tsx",
+      "type": "text",
+      "size": 240,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_ForgotPassword/empty.tsx",
+      "type": "text",
+      "size": 409,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_ForgotPassword/1744646864392.tsx",
+      "type": "text",
+      "size": 3901,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_ForgotPassword/meta.json",
+      "type": "text",
+      "size": 83,
+      "dependencies": false
+    }
+  ]
+}

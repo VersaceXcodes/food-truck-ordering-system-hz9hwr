@@ -1,0 +1,15 @@
+{
+  "timestamp": 1744644252543,
+  "operation": {
+    "id": "backend:server:main"
+  },
+  "projectId": "food-truck-ordering-system",
+  "files": [
+    {
+      "path": "../../apps/food-truck-ordering-system/backend/server.js",
+      "type": "text",
+      "size": 24550,
+      "dependencies": false
+    }
+  ]
+}

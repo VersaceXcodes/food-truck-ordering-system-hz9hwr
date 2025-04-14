@@ -1,0 +1,37 @@
+{
+  "timestamp": 1744646342453,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_OperatorMenuManagement",
+      "version": "1744645738767"
+    }
+  },
+  "projectId": "food-truck-ordering-system",
+  "files": [
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/components/views/UV_OperatorMenuManagement.tsx",
+      "type": "text",
+      "size": 248,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_OperatorMenuManagement/empty.tsx",
+      "type": "text",
+      "size": 433,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_OperatorMenuManagement/1744645738767.tsx",
+      "type": "text",
+      "size": 13734,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_OperatorMenuManagement/meta.json",
+      "type": "text",
+      "size": 53,
+      "dependencies": false
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "timestamp": 1744645982973,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_CartReview",
+      "version": "1744645738698"
+    }
+  },
+  "projectId": "food-truck-ordering-system",
+  "files": [
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/components/views/UV_CartReview.tsx",
+      "type": "text",
+      "size": 236,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_CartReview/empty.tsx",
+      "type": "text",
+      "size": 397,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_CartReview/1744645738698.tsx",
+      "type": "text",
+      "size": 6773,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_CartReview/meta.json",
+      "type": "text",
+      "size": 53,
+      "dependencies": false
+    }
+  ]
+}

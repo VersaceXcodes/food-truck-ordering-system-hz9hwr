@@ -1,0 +1,15 @@
+{
+  "timestamp": 1744643591062,
+  "operation": {
+    "id": "db:postgres"
+  },
+  "projectId": "food-truck-ordering-system",
+  "files": [
+    {
+      "path": "../../apps/food-truck-ordering-system/backend/db.sql",
+      "type": "text",
+      "size": 9705,
+      "dependencies": false
+    }
+  ]
+}

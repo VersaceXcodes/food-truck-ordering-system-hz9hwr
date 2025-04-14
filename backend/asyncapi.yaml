@@ -1,0 +1,112 @@
+asyncapi: 2.0.0
+id: urn:foodtruck-express:realtime-api:1.0.0
+info:
+  title: FoodTruck Express Realtime API
+  version: 1.0.0
+  description: >
+    This AsyncAPI document defines the realtime websocket events for the
+    FoodTruck Express MVP. It covers order status updates, new order
+    notifications, and notification read events.
+servers:
+  development:
+    url: ws://localhost:1337
+    protocol: ws
+channels:
+  order_status_update:
+    subscribe:
+      summary: Receive order status update events.
+      description: >
+        This event is emitted when a food truck operator updates an order's
+        status. It notifies the client with the updated order details including
+        order ID, new status, and the timestamp of change.
+      operationId: receive_order_status_update
+      message:
+        contentType: application/json
+        payload:
+          $ref: "#/components/schemas/order_status_update"
+  new_order_notification:
+    subscribe:
+      summary: Receive new order notifications.
+      description: >
+        This event is emitted immediately after a new order is created. It
+        notifies the food truck operator of the incoming order details.
+      operationId: receive_new_order_notification
+      message:
+        contentType: application/json
+        payload:
+          $ref: "#/components/schemas/new_order_notification"
+  notification_read:
+    publish:
+      summary: Acknowledge notification read events.
+      description: >
+        This event is published when a user marks a notification as read. It
+        prompts the server to update the read status of the notification.
+      operationId: publish_notification_read
+      message:
+        contentType: application/json
+        payload:
+          $ref: "#/components/schemas/notification_read"
+components:
+  schemas:
+    order_status_update:
+      type: object
+      required:
+        - order_id
+        - new_status
+        - changed_at
+      properties:
+        order_id:
+          type: string
+          description: The unique identifier of the order.
+        new_status:
+          type: string
+          description: The new status of the order.
+          enum:
+            - accepted
+            - preparing
+            - ready
+            - completed
+            - cancelled
+        changed_at:
+          type: number
+          description: Unix timestamp when the order status was updated.
+    new_order_notification:
+      type: object
+      required:
+        - order_id
+        - customer_id
+        - food_truck_id
+        - order_status
+        - created_at
+      properties:
+        order_id:
+          type: string
+          description: The unique identifier for the new order.
+        customer_id:
+          type: string
+          description: The identifier of the customer who placed the order.
+        food_truck_id:
+          type: string
+          description: The identifier of the food truck receiving the order.
+        order_status:
+          type: string
+          description: The initial status of the order.
+          enum:
+            - pending
+        created_at:
+          type: number
+          description: Unix timestamp when the order was created.
+    notification_read:
+      type: object
+      required:
+        - notification_id
+        - is_read
+      properties:
+        notification_id:
+          type: string
+          description: The unique identifier of the notification.
+        is_read:
+          type: string
+          description: Flag indicating the notification has been marked as read.
+          enum:
+            - "true"

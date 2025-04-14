@@ -1,0 +1,25 @@
+{
+  "timestamp": 1744645668505,
+  "operation": {
+    "id": "webapp:react:root",
+    "refs": {
+      "id": "app",
+      "version": "latest"
+    }
+  },
+  "projectId": "food-truck-ordering-system",
+  "files": [
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/App.tsx",
+      "type": "text",
+      "size": 3782,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/meta.json",
+      "type": "text",
+      "size": 40,
+      "dependencies": false
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "timestamp": 1744646071464,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_PaymentReview",
+      "version": "latest"
+    }
+  },
+  "projectId": "food-truck-ordering-system",
+  "files": [
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/components/views/UV_PaymentReview.tsx",
+      "type": "text",
+      "size": 239,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_PaymentReview/empty.tsx",
+      "type": "text",
+      "size": 406,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_PaymentReview/latest.tsx",
+      "type": "text",
+      "size": 9328,
+      "dependencies": false
+    },
+    {
+      "path": "../../apps/food-truck-ordering-system/vitereact/src/_cofounder/generated/views/UV_PaymentReview/meta.json",
+      "type": "text",
+      "size": 53,
+      "dependencies": false
+    }
+  ]
+}
